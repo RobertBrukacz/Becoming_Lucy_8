@@ -29,7 +29,7 @@ class Button:
             self.current_color = self.idle_color
         return False
 
-class ButtonFactory:
+class CreateButton:
     @staticmethod
     def create_main_menu_buttons():
         return [

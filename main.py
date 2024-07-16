@@ -1,5 +1,5 @@
 import pygame
-from menu import Menu, ButtonFactory
+from menu import Menu, CreateButton
 
 class Main:
     def __init__(self):
@@ -10,9 +10,9 @@ class Main:
         self.running = True
         self.fps = 60
         self.state = "main_menu"
-        self.main_menu_buttons = ButtonFactory.create_main_menu_buttons()
-        self.start_game_buttons = ButtonFactory.create_start_game_buttons()
-        self.options_buttons = ButtonFactory.create_options_buttons()
+        self.main_menu_buttons = CreateButton.create_main_menu_buttons()
+        self.start_game_buttons = CreateButton.create_start_game_buttons()
+        self.options_buttons = CreateButton.create_options_buttons()
         self.handler = Menu(self)
 
     def run(self):
