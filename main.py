@@ -1,7 +1,7 @@
 import pygame
-from menu import Button
+from menu import Menu, ButtonFactory
 
-class Menu:
+class Main:
     def __init__(self):
         pygame.init()
         pygame.display.set_caption("Menu with Buttons")
@@ -9,26 +9,19 @@ class Menu:
         self.clock = pygame.time.Clock()
         self.running = True
         self.fps = 60
-        self.buttons = [
-            Button("Start Game", (400, 200), (250, 50), (0, 128, 0), (0, 255, 0)),
-            Button("Options", (400, 300), (250, 50), (0, 0, 128), (0, 0, 255)),
-            Button("Quit", (400, 400), (250, 50), (128, 0, 0), (255, 0, 0))
-        ]
+        self.state = "main_menu"
+        self.main_menu_buttons = ButtonFactory.create_main_menu_buttons()
+        self.start_game_buttons = ButtonFactory.create_start_game_buttons()
+        self.options_buttons = ButtonFactory.create_options_buttons()
+        self.handler = Menu(self)
 
     def run(self):
         while self.running:
-            self.handle_events()
+            self.handler.handle_events()
             self.update()
             self.render()
             self.clock.tick(self.fps)
         pygame.quit()
-
-    def handle_events(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                self.running = False
-            for button in self.buttons:
-                button.handle_event(event)
 
     def update(self):
         # Hier wird die Menü-Logik aktualisiert, falls nötig
@@ -36,10 +29,14 @@ class Menu:
 
     def render(self):
         self.screen.fill((0, 0, 0))  # Bildschirm schwarz füllen
-        for button in self.buttons:
-            button.draw(self.screen)
+        if self.state == "main_menu":
+            self.handler.draw_buttons(self.main_menu_buttons)
+        elif self.state == "start_game":
+            self.handler.draw_buttons(self.start_game_buttons)
+        elif self.state == "options":
+            self.handler.draw_buttons(self.options_buttons)
         pygame.display.flip()
 
 if __name__ == "__main__":
-    menu = Menu()
-    menu.run()
+    main = Main()
+    main.run()
