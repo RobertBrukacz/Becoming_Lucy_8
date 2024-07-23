@@ -39,20 +39,32 @@ class MainMenu(State):
         self.button2.create()
 
 class Game(State):
+    def __init__(self, screen):
+        super().__init__(screen)
+        self.size = (1050, 600)
+        self.pos = (0, 0)
+        
     def enter(self):
         print("Starting Game")
+        self.screen.fill((10, 60, 40))
+        self.game_background = pygame.image.load("assets/images/gameworld/Spielwelt.png")
 
     def exit(self):
         print("Exiting Game")
 
-    def update(self):
+    def create(self):
+        game_background_resized = pygame.transform.scale(self.game_background, self.size)
+        #print("1: ", self.action)
+        self.screen.blit(game_background_resized, self.pos)
+
+    def update(self, events):
         pass  # Add logic for updating game
 
     def render(self, screen):
-        pass  # Add logic for rendering game
+        self.create()  # Add logic for rendering game
 
 class PauseMenu(State):
-    def update(self):
+    def update(self, events):
         pass  # Placeholder for pause menu logic
 
     def render(self, screen):
@@ -98,7 +110,7 @@ class Button:
         self.rect = pygame.Rect(pos, size)
         
     def create(self):
-        button = pygame.image.load("assets/" + self.name + ".png")
+        button = pygame.image.load("assets/buttons/" + self.name + ".png")
         button_resized = pygame.transform.scale(button, self.size)
         #print("1: ", self.action)
         self.screen.blit(button_resized, self.pos)
@@ -120,6 +132,8 @@ class Button:
             #print(self.main.current_state)
             #self.main.current_state = "quit"
             self.main.running = False
+        elif self.action == "new_game":
+            self.main.start_new_game()
 
 class Main:
     def __init__(self):
@@ -144,6 +158,9 @@ class Main:
             #print("5: ", self.running)
             pygame.display.flip()
         pygame.quit()
+
+    def start_new_game(self):
+        self.state_manager.change_state(Game(self.screen))
         
 if __name__ == "__main__":
     main = Main()
