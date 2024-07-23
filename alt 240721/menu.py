@@ -83,3 +83,12 @@ class Menu:
     def draw_buttons(self, buttons):
         for button in buttons:
             button.draw(self.menu.screen)
+            
+    def button_render(self):
+        self.screen.fill((0, 0, 0))  # Bildschirm schwarz füllen
+        if self.state == "main_menu":
+            self.handler.draw_buttons(self.main_menu_buttons)
+        elif self.state == "start_game":
+            self.handler.draw_buttons(self.start_game_buttons)
+        elif self.state == "options":
+            self.handler.draw_buttons(self.options_buttons)
